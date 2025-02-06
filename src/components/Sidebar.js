@@ -1,13 +1,11 @@
-// src/components/Sidebar.js
 import React from "react";
 
 const Sidebar = ({ selectedSection, setSelectedSection }) => {
   const menuItems = [
     { name: "Basic Info", icon: "ℹ️" },
-    { name: "Points", icon: "💰" },
+    { name: "Points", icon: "📊" },
     { name: "Account", icon: "⚙️" },
-    { name: "Lab", icon: "🔬" },
-    { name: "Privacy", icon: "🔒" },
+    { name: "Lab", icon: "🧪" },
     { name: "Notifications", icon: "🔔" },
   ];
 

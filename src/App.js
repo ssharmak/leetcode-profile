@@ -1,11 +1,9 @@
-// src/App.js
 import React, { useState } from "react";
 import Sidebar from "./components/Sidebar";
 import Profile from "./components/Profile";
 import Points from "./components/Points";
 import Account from "./components/Account";
 import Lab from "./components/Lab";
-import Privacy from "./components/Privacy";
 import Notifications from "./components/Notifications";
 
 const App = () => {
@@ -17,28 +15,27 @@ const App = () => {
         selectedSection={selectedSection}
         setSelectedSection={setSelectedSection}
       />
-      <div style={styles.profileContainer}>
+      <div style={styles.contentContainer}>
         {selectedSection === "Basic Info" && <Profile />}
         {selectedSection === "Points" && <Points />}
         {selectedSection === "Account" && <Account />}
         {selectedSection === "Lab" && <Lab />}
-        {selectedSection === "Privacy" && <Privacy />}
         {selectedSection === "Notifications" && <Notifications />}
       </div>
     </div>
   );
 };
 
-// Inline styles
 const styles = {
   app: {
     display: "flex",
     height: "100vh",
-    backgroundColor: "#121212",
+    backgroundColor: "#121212", // Set the same background color for the whole screen
     color: "white",
   },
-  profileContainer: {
+  contentContainer: {
     flex: 1,
+    backgroundColor: "#121212", // Match the content section's background with the screen
     padding: "20px",
   },
 };

@@ -1,91 +1,167 @@
 import React, { useState } from "react";
 
 const Privacy = () => {
-  // User Privacy Settings state
-  const [privacySettings, setPrivacySettings] = useState({
+  const [privacy, setPrivacy] = useState({
+    profileVisibility: "Public",
+    resumeVisibility: "Public",
+    performanceVisibility: "Public",
     canContactForJob: true,
-    joinLeaderboard: true,
-    displaySubmissionHistory: true,
+    showSubmissionHistory: true,
+    acceptTerms: false,
   });
 
-  // Handle privacy setting change
+  // Handle Privacy Changes
   const handlePrivacyChange = (field, value) => {
-    setPrivacySettings({ ...privacySettings, [field]: value });
+    setPrivacy({ ...privacy, [field]: value });
+  };
+
+  // Handle Save Changes
+  const handleSave = () => {
+    if (!privacy.acceptTerms) {
+      alert("You must accept the Terms & Conditions before saving changes.");
+      return;
+    }
+
+    alert("Privacy settings updated successfully!");
   };
 
   return (
     <div style={styles.container}>
       <h2>Privacy Settings</h2>
+      <p>Manage how your data is shared and displayed.</p>
 
-      {/* Can contact you with job opportunities */}
+      {/* Profile Visibility */}
+      <div style={styles.section}>
+        <label style={styles.label}>Profile Visibility</label>
+        <select
+          value={privacy.profileVisibility}
+          onChange={(e) =>
+            handlePrivacyChange("profileVisibility", e.target.value)
+          }
+          style={styles.select}
+        >
+          <option value="Public">Public</option>
+          <option value="Friends">Friends</option>
+          <option value="Private">Private</option>
+        </select>
+      </div>
+
+      {/* Resume Visibility */}
+      <div style={styles.section}>
+        <label style={styles.label}>Resume Visibility</label>
+        <select
+          value={privacy.resumeVisibility}
+          onChange={(e) =>
+            handlePrivacyChange("resumeVisibility", e.target.value)
+          }
+          style={styles.select}
+        >
+          <option value="Public">Public</option>
+          <option value="Private">Private</option>
+        </select>
+      </div>
+
+      {/* Performance Visibility */}
+      <div style={styles.section}>
+        <label style={styles.label}>Performance Visibility</label>
+        <select
+          value={privacy.performanceVisibility}
+          onChange={(e) =>
+            handlePrivacyChange("performanceVisibility", e.target.value)
+          }
+          style={styles.select}
+        >
+          <option value="Public">Public</option>
+          <option value="Private">Private</option>
+        </select>
+      </div>
+
+      {/* Can Companies Contact You? */}
       <div style={styles.section}>
         <label style={styles.label}>
           Can companies contact you with job opportunities?
         </label>
-        <div>
-          <input
-            type="checkbox"
-            checked={privacySettings.canContactForJob}
-            onChange={(e) =>
-              handlePrivacyChange("canContactForJob", e.target.checked)
-            }
-            style={styles.checkbox}
-          />
-          Yes
-        </div>
-        <button
-          style={styles.editButton}
-          onClick={() => alert("Privacy setting edited.")}
-        >
-          Edit
-        </button>
-      </div>
-
-      {/* Join Study Plan Leaderboard */}
-      <div style={styles.section}>
-        <label style={styles.label}>Join study plan leaderboard</label>
-        <div>
-          <input
-            type="checkbox"
-            checked={privacySettings.joinLeaderboard}
-            onChange={(e) =>
-              handlePrivacyChange("joinLeaderboard", e.target.checked)
-            }
-            style={styles.checkbox}
-          />
-          Yes
-        </div>
-        <button
-          style={styles.editButton}
-          onClick={() => alert("Privacy setting edited.")}
-        >
-          Edit
-        </button>
+        <input
+          type="checkbox"
+          checked={privacy.canContactForJob}
+          onChange={() =>
+            handlePrivacyChange("canContactForJob", !privacy.canContactForJob)
+          }
+          style={styles.checkbox}
+        />
+        <span>Yes</span>
       </div>
 
       {/* Display Submission History */}
       <div style={styles.section}>
         <label style={styles.label}>Display my submission history</label>
-        <div>
-          <input
-            type="checkbox"
-            checked={privacySettings.displaySubmissionHistory}
-            onChange={(e) =>
-              handlePrivacyChange("displaySubmissionHistory", e.target.checked)
-            }
-            style={styles.checkbox}
-          />
-          Yes
-        </div>
-        <button
-          style={styles.editButton}
-          onClick={() => alert("Privacy setting edited.")}
-        >
-          Edit
-        </button>
+        <input
+          type="checkbox"
+          checked={privacy.showSubmissionHistory}
+          onChange={() =>
+            handlePrivacyChange(
+              "showSubmissionHistory",
+              !privacy.showSubmissionHistory
+            )
+          }
+          style={styles.checkbox}
+        />
+        <span>Yes</span>
       </div>
 
-      <button style={styles.saveButton}>Save Changes</button>
+      {/* Terms & Conditions */}
+      <h2>Terms & Conditions</h2>
+      <div style={styles.termsBox}>
+        <p>
+          Welcome to our Personalized Coding Platform. By using our services,
+          you agree to the following terms:
+        </p>
+        <ul style={styles.list}>
+          <li>
+            ✅ **User Responsibility**: Users must not share account credentials
+            or misuse the platform.
+          </li>
+          <li>
+            ✅ **Content Ownership**: Any code submitted remains the
+            intellectual property of the user, but the platform may use
+            anonymized submissions for improvement.
+          </li>
+          <li>
+            ✅ **Data Privacy**: We do not share personal information with third
+            parties without user consent.
+          </li>
+          <li>
+            ✅ **Fair Usage Policy**: Abusing the system, spamming, or unethical
+            behavior may result in suspension.
+          </li>
+          <li>
+            ✅ **Performance Data**: Your coding performance data is stored to
+            provide insights and analytics.
+          </li>
+          <li>
+            ✅ **Modifications**: These terms may change over time, and users
+            will be notified.
+          </li>
+        </ul>
+      </div>
+
+      {/* Accept Terms & Conditions */}
+      <div style={styles.section}>
+        <input
+          type="checkbox"
+          checked={privacy.acceptTerms}
+          onChange={() =>
+            handlePrivacyChange("acceptTerms", !privacy.acceptTerms)
+          }
+          style={styles.checkbox}
+        />
+        <span>I accept the Terms & Conditions</span>
+      </div>
+
+      {/* Save Button */}
+      <button style={styles.saveButton} onClick={handleSave}>
+        Save Changes
+      </button>
     </div>
   );
 };
@@ -101,31 +177,44 @@ const styles = {
   },
   section: {
     marginBottom: "20px",
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "space-between",
   },
   label: {
-    display: "block",
-    marginBottom: "5px",
     fontWeight: "bold",
+    flex: "1",
+  },
+  select: {
+    width: "50%",
+    padding: "8px",
+    fontSize: "14px",
+    borderRadius: "4px",
+    border: "1px solid #ccc",
+    backgroundColor: "#121212",
+    color: "white",
+  },
+  termsBox: {
+    backgroundColor: "#2a2a2a",
+    padding: "15px",
+    borderRadius: "5px",
+    marginBottom: "20px",
+  },
+  list: {
+    paddingLeft: "20px",
   },
   checkbox: {
     marginRight: "10px",
   },
-  editButton: {
-    backgroundColor: "#fdd835",
-    border: "none",
-    padding: "5px 10px",
-    cursor: "pointer",
-    marginLeft: "10px",
-  },
   saveButton: {
-    backgroundColor: "#4CAF50",
-    color: "white",
+    backgroundColor: (privacy) => (privacy.acceptTerms ? "#4CAF50" : "#777"),
+    color: "green",
     padding: "10px",
     border: "none",
     cursor: "pointer",
     fontWeight: "bold",
-    marginTop: "20px",
     width: "100%",
+    borderRadius: "5px",
   },
 };
 

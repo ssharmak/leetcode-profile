@@ -3,9 +3,11 @@ import React from "react";
 const Sidebar = ({ selectedSection, setSelectedSection }) => {
   const menuItems = [
     { name: "Basic Info", icon: "ℹ️" },
-    { name: "Points", icon: "📊" },
+    { name: "Points", icon: "💰" },
+    { name: "Performance", icon: "📈" }, // <-- NEW PERFORMANCE PAGE
     { name: "Account", icon: "⚙️" },
-    { name: "Lab", icon: "🧪" },
+    { name: "Lab", icon: "🔬" },
+    { name: "Privacy", icon: "🔒" },
     { name: "Notifications", icon: "🔔" },
   ];
 

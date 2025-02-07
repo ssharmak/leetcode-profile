@@ -1,102 +1,117 @@
 import React, { useState } from "react";
 
 const Account = () => {
-  const [account, setAccount] = useState({
+  // Unique User ID for integration
+  const uniqueUserId = "USER-" + Math.floor(100000 + Math.random() * 900000);
+
+  const [accountInfo] = useState({
+    userId: uniqueUserId,
+    name: "Shailesh Sharma K",
     email: "shailesh@example.com",
-    newPassword: "",
-    confirmPassword: "",
-    twoFactorAuth: false,
   });
 
-  const [privacy, setPrivacy] = useState({
-    showProfile: true,
-    allowMessages: false,
+  const [connectedAccounts, setConnectedAccounts] = useState({
+    google: false,
+    linkedin: true,
+    github: false,
   });
 
-  const handleAccountChange = (field, value) => {
-    setAccount({ ...account, [field]: value });
+  // Toggle Social Account Connection
+  const toggleConnection = (platform) => {
+    setConnectedAccounts((prev) => ({
+      ...prev,
+      [platform]: !prev[platform],
+    }));
   };
 
-  const handlePrivacyChange = (e) => {
-    setPrivacy({ ...privacy, [e.target.name]: e.target.checked });
+  // Delete Account Handler
+  const handleDeleteAccount = () => {
+    const confirmDelete = window.confirm(
+      "Are you sure you want to delete your account? This action cannot be undone."
+    );
+
+    if (confirmDelete) {
+      alert(`Account with User ID ${accountInfo.userId} has been deleted.`);
+      console.log(`Deleting account with User ID: ${accountInfo.userId}`);
+      // Backend API call should be made here to remove user data
+    }
   };
 
   return (
     <div style={styles.container}>
-      <h2>Account Settings</h2>
+      <h2>Account Information</h2>
 
-      {/* Email Update */}
-      <div style={styles.section}>
-        <label style={styles.label}>Email Address</label>
-        <input
-          type="email"
-          value={account.email}
-          onChange={(e) => handleAccountChange("email", e.target.value)}
-          style={styles.input}
-        />
+      {/* Account Information Section */}
+      <div style={styles.accountInfo}>
+        <p>
+          <strong>User ID:</strong> {accountInfo.userId}
+        </p>
+        <p>
+          <strong>Name:</strong> {accountInfo.name}
+        </p>
+        <p>
+          <strong>Email:</strong> {accountInfo.email}
+        </p>
       </div>
 
-      {/* Password Change */}
-      <div style={styles.section}>
-        <label style={styles.label}>New Password</label>
-        <input
-          type="password"
-          value={account.newPassword}
-          onChange={(e) => handleAccountChange("newPassword", e.target.value)}
-          style={styles.input}
-        />
-      </div>
+      <h2>Connected Accounts</h2>
 
+      {/* Google */}
       <div style={styles.section}>
-        <label style={styles.label}>Confirm Password</label>
-        <input
-          type="password"
-          value={account.confirmPassword}
-          onChange={(e) =>
-            handleAccountChange("confirmPassword", e.target.value)
+        <label style={styles.label}>Google</label>
+        <button
+          style={
+            connectedAccounts.google
+              ? styles.disconnectButton
+              : styles.connectButton
           }
-          style={styles.input}
-        />
+          onClick={() => toggleConnection("google")}
+        >
+          {connectedAccounts.google ? "Disconnect" : "Connect"}
+        </button>
       </div>
 
-      {/* Two-Factor Authentication */}
+      {/* LinkedIn */}
       <div style={styles.section}>
-        <label style={styles.checkboxLabel}>
-          <input
-            type="checkbox"
-            checked={account.twoFactorAuth}
-            onChange={() =>
-              handleAccountChange("twoFactorAuth", !account.twoFactorAuth)
-            }
-          />
-          Enable Two-Factor Authentication (2FA)
-        </label>
+        <label style={styles.label}>LinkedIn</label>
+        <button
+          style={
+            connectedAccounts.linkedin
+              ? styles.disconnectButton
+              : styles.connectButton
+          }
+          onClick={() => toggleConnection("linkedin")}
+        >
+          {connectedAccounts.linkedin ? "Disconnect" : "Connect"}
+        </button>
       </div>
 
-      <h3>Privacy Settings</h3>
+      {/* GitHub */}
+      <div style={styles.section}>
+        <label style={styles.label}>GitHub</label>
+        <button
+          style={
+            connectedAccounts.github
+              ? styles.disconnectButton
+              : styles.connectButton
+          }
+          onClick={() => toggleConnection("github")}
+        >
+          {connectedAccounts.github ? "Disconnect" : "Connect"}
+        </button>
+      </div>
 
-      {/* Privacy Settings */}
-      <label style={styles.checkboxLabel}>
-        <input
-          type="checkbox"
-          name="showProfile"
-          checked={privacy.showProfile}
-          onChange={handlePrivacyChange}
-        />
-        Show Profile to Public
-      </label>
-
-      <label style={styles.checkboxLabel}>
-        <input
-          type="checkbox"
-          name="allowMessages"
-          checked={privacy.allowMessages}
-          onChange={handlePrivacyChange}
-        />
-        Allow Direct Messages
-      </label>
-
-      <button style={styles.saveButton}>Save Changes</button>
+      {/* Delete Account Button */}
+      <div style={styles.deleteSection}>
+        <h3>Delete Account</h3>
+        <p style={styles.warningText}>
+          Deleting your account will permanently remove all your data and cannot
+          be undone.
+        </p>
+        <button style={styles.deleteButton} onClick={handleDeleteAccount}>
+          Delete Account
+        </button>
+      </div>
     </div>
   );
 };
@@ -107,34 +122,62 @@ const styles = {
     backgroundColor: "#1e1e1e",
     borderRadius: "8px",
     color: "white",
-    maxWidth: "400px",
+    maxWidth: "500px",
+    margin: "0 auto",
+  },
+  accountInfo: {
+    backgroundColor: "#2a2a2a",
+    padding: "15px",
+    borderRadius: "5px",
+    marginBottom: "20px",
   },
   section: {
-    marginBottom: "15px",
+    display: "flex",
+    justifyContent: "space-between",
+    alignItems: "center",
+    padding: "10px 0",
   },
   label: {
-    display: "block",
-    marginBottom: "5px",
+    fontSize: "16px",
     fontWeight: "bold",
   },
-  input: {
-    width: "100%",
-    padding: "8px",
+  connectButton: {
+    backgroundColor: "#4CAF50",
+    color: "white",
+    padding: "8px 12px",
+    border: "none",
+    cursor: "pointer",
+    borderRadius: "5px",
+  },
+  disconnectButton: {
+    backgroundColor: "#d9534f",
+    color: "white",
+    padding: "8px 12px",
+    border: "none",
+    cursor: "pointer",
+    borderRadius: "5px",
+  },
+  deleteSection: {
+    marginTop: "30px",
+    padding: "15px",
+    backgroundColor: "#3a3a3a",
+    borderRadius: "5px",
+    textAlign: "center",
+  },
+  warningText: {
+    color: "#ffcc00",
     fontSize: "14px",
-    borderRadius: "4px",
-    border: "1px solid #ccc",
+    marginBottom: "10px",
   },
-  checkboxLabel: {
-    display: "block",
-    margin: "10px 0",
-  },
-  saveButton: {
-    backgroundColor: "yellow",
+  deleteButton: {
+    backgroundColor: "#ff4d4d",
+    color: "white",
     padding: "10px",
     border: "none",
     cursor: "pointer",
     fontWeight: "bold",
-    marginTop: "10px",
+    width: "100%",
+    borderRadius: "5px",
   },
 };
 

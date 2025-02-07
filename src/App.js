@@ -10,18 +10,26 @@ import Notifications from "./components/Notifications";
 
 const App = () => {
   const [selectedSection, setSelectedSection] = useState("Basic Info");
+  const [profileImage, setProfileImage] = useState(
+    localStorage.getItem("profileImage") || "https://via.placeholder.com/100"
+  );
 
   return (
     <div style={styles.app}>
-      {/* Sidebar for navigation */}
+      {/* Profile image in the top-right corner */}
+      <div style={styles.profileImageContainer}>
+        <img src={profileImage} alt="Profile" style={styles.profileImage} />
+      </div>
+
       <Sidebar
         selectedSection={selectedSection}
         setSelectedSection={setSelectedSection}
       />
 
-      {/* Main content area */}
       <div style={styles.contentContainer}>
-        {selectedSection === "Basic Info" && <Profile />}
+        {selectedSection === "Basic Info" && (
+          <Profile setProfileImage={setProfileImage} />
+        )}
         {selectedSection === "Points" && <Points />}
         {selectedSection === "Performance" && <PerformanceGraph />}
         {selectedSection === "Account" && <Account />}
@@ -37,14 +45,27 @@ const styles = {
   app: {
     display: "flex",
     height: "100vh",
-    backgroundColor: "#121212", // Consistent dark theme
+    backgroundColor: "#121212",
     color: "white",
+  },
+  profileImageContainer: {
+    position: "absolute",
+    top: "15px",
+    right: "20px",
+    zIndex: 1000,
+  },
+  profileImage: {
+    width: "50px",
+    height: "50px",
+    borderRadius: "50%", // Makes it round
+    border: "2px solid white",
+    objectFit: "cover",
   },
   contentContainer: {
     flex: 1,
     backgroundColor: "#121212",
     padding: "20px",
-    overflowY: "auto", // Enables scrolling for long pages
+    overflowY: "auto",
   },
 };
 
